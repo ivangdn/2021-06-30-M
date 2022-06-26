@@ -38,12 +38,43 @@ public class FXMLController {
 
     @FXML
     void doContaArchi(ActionEvent event) {
-
+    	txtResult.clear();
+    	double soglia;
+    	try {
+    		soglia = Double.parseDouble(txtSoglia.getText());
+    	} catch(NumberFormatException e) {
+    		txtResult.setText("La soglia deve essere un numero");
+    		return;
+    	}
+    	
+    	if(soglia<model.getPesoMin() || soglia>model.getPesoMax()) {
+    		txtResult.setText("La soglia deve essere compresa tra "+model.getPesoMin()+" e "+model.getPesoMax());
+    		return;
+    	}
+    	
+    	txtResult.appendText("Soglia: "+soglia+"--> Maggiori "+model.getArchiPesoMaggiore(soglia)+", minori "+model.getArchiPesoMinore(soglia));
+    	
     }
 
     @FXML
     void doRicerca(ActionEvent event) {
-
+    	txtResult.clear();
+    	double soglia;
+    	try {
+    		soglia = Double.parseDouble(txtSoglia.getText());
+    	} catch(NumberFormatException e) {
+    		txtResult.setText("La soglia deve essere un numero");
+    		return;
+    	}
+    	
+    	if(soglia<model.getPesoMin() || soglia>model.getPesoMax()) {
+    		txtResult.setText("La soglia deve essere compresa tra "+model.getPesoMin()+" e "+model.getPesoMax());
+    		return;
+    	}
+    	
+    	for(Integer c : model.ricercaCammino(soglia)) {
+    		txtResult.appendText(c+"\n");
+    	}
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -57,6 +88,7 @@ public class FXMLController {
 
 	public void setModel(Model model) {
 		this.model = model ;
-		
+		txtResult.appendText(model.creaGrafo()+"\n");
+		txtResult.appendText("Peso minimo = "+model.getPesoMin()+", peso massimo = "+model.getPesoMax());
 	}
 }
